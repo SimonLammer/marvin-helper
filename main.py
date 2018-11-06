@@ -8,6 +8,7 @@ optional = "?"
 group_start = "["
 group_end = "]"
 group_seperator = ","
+current_attr = "%"
 rule_regex = re.compile(r'^\(...,([^,]*),([^\)]*)\)..\(([^,]*),[^,]*,([^\)]*)\)$')
 
 def rules_for_line(line):
@@ -31,7 +32,10 @@ def rules_for_line(line):
   
   match = rule_regex.match(line)
   if match:
-    print(match)
+    if match[3] == current_attr:
+      line = line[:match.start(3)] + match[2] + line[match.end(3):]
+    if match[4] == current_attr:
+      line = line[:match.start(4)] + match[1] + line[match.end(4):]
   
   return [line]
 
