@@ -32,10 +32,12 @@ def rules_for_line(line):
   
   match = rule_regex.match(line)
   if match:
+    offset = 0
     if match[3] == current_attr:
       line = line[:match.start(3)] + match[2] + line[match.end(3):]
+      offset = len(match[2]) - len(current_attr)
     if match[4] == current_attr:
-      line = line[:match.start(4)] + match[1] + line[match.end(4):]
+      line = line[:match.start(4)+offset] + match[1] + line[match.end(4)+offset:]
   
   return [line]
 
